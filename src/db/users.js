@@ -1,26 +1,18 @@
 module.exports = [
   {
     id: 1,
-    firstName: 'Cucumber',
-    balance: 1000,
-    isDeleted: false,
+    firstName: 'George',
   },
   {
     id: 2,
-    firstName: 'Tomato',
-    balance: 2000,
-    isDeleted: false,
+    firstName: 'Anna',
   },
   {
     id: 3,
-    firstName: 'Broccoli',
-    balance: 300,
-    isDeleted: false,
+    firstName: 'Alice',
   },
   {
     id: 4,
-    firstName: 'Lettuce',
-    balance: 100,
-    isDeleted: false,
+    firstName: 'Bob',
   },
 ]
