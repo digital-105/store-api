@@ -1,20 +1,18 @@
 const { Sequelize } = require('sequelize');
-const { Card, User } = require('./models');
-const config = require('./config')
+const { UserType } = require('./models');
 
 
-// NOTE: creates connection object
 const connection = new Sequelize(
-  config.name,
-  config.username,
-  config.password,
-  {
-    host: config.host,
-    dialect: 'postgres',
-  }
-);
+'root',
+'root',
+'root',
+{
+  host: 'localhost',
+  diealect: 'postgres',
+  
+}
+)
 
-// NOTE: tests connection object validity
 (async () => {
   try {
     await connection.authenticate();
@@ -25,34 +23,33 @@ const connection = new Sequelize(
   }
 })();
 
-// initializes models
 User.init(connection);
-Card.init(connection);
+Region.init(connection);
+UserType.init(connection);
 
-// creates relations for sequelize
-User.hasMany(Card, {
-  as: 'cards',
-  foreignKey: {
-    name: 'userId',
-    allowNull: false,
+
+Region.belongsTo(User,{
+  as:'user',
+  foreignKey:{
+    name:'regionId',
+    allowNull:false,
   },
 });
 
-Card.belongsTo(User, {
-  as: 'user',
+UserType.belongsTo(User, {
+  as:'user',
   foreignKey: {
-    name: 'userId',
+    name:'userTypeId',
     allowNull: false
   }
 });
 
-// alter table users add column aprop int not null
 (async () => {
 
-  // checks whether db tables and models are equal or not
-  const syncPromises = [
+   const syncPromises = [
     User.sync({ force: false }).catch((e) => console.error('User', e)),
-    Card.sync({ force: false }).catch((e) => console.error('Card', e)),
+    Region.sync({ force: false }).catch((e) => console.error('Region', e)),
+    UserType.sync({ force: false }).catch((e) => console.error('UserType', e)),
   ];
 
   await Promise.all(syncPromises);

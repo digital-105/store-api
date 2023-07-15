@@ -1,4 +1,5 @@
-const Card = require('./card.model');
 const User = require('./user.model.js');
+const Region = require('./regions.model.js');
+const UserType = require('./userType.model.js');
 
-module.exports = { Card, User };
+module.exports = { User, Region, UserType };

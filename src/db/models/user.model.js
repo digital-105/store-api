@@ -12,18 +12,26 @@ class User extends Model {
           type: DataTypes.STRING(50),
           allowNull: false,
         },
-        email: {
+        balance: {
           type: DataTypes.STRING(50),
           allowNull: false,
         },
-        password: {
-          type: DataTypes.STRING(100),
+        regionId: {
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
-        isAdmin: {
-          type: DataTypes.BOOLEAN,
+        userTypeId: {
+          type: DataTypes.INTEGER,
           allowNull: false,
           defaultValue: false,
+        }, 
+        createAt: {
+          type: DataTypes.DATE,
+          allowNull: false,
+        },
+        updateAt: {
+          type: DataTypes.DATE,
+          allowNull: false,
         },
         deletedAt: {
           type: DataTypes.DATE,

@@ -1,28 +1,35 @@
-const bcrypt = require('bcrypt')
-const { User: UserModel } = require('../db/models');
+const users = require('../db/users');
 
-const findById = (id) => UserModel.findById(id);
+const getLatestId = () => users[users.length - 1].id + 1;
 
-const findByEmail = (email) => UserModel.findOne({ where: { email } });
+const getUsers = () => users.filter((u) => !u.isDeleted);
 
-const createUser = async (userPayload) => {
-  const user = await UserModel.findOne({ where: { email: userPayload.email } });
+const getUserById = (id) => users.find((u) => +u.id === +id && !u.isDeleted)
 
-  if (user) {
-    throw new Error('User already exists');
+const addUser = (payload) => users.push({ id: getLatestId(), ...payload, isDeleted: false });
+
+const updateUser = (id, payload) => {
+  const UserIndex = users.findIndex((u) => u.id === id);
+
+  users[UserIndex] = {
+    ...users[UserIndex],
+    ...payload,
   };
-
-  const hashedPassword = bcrypt.hashSync(userPayload.password, Number(process.env.AUTH_SALT_AMOUNT));
-
-  userPayload.password = hashedPassword;
-
-  return UserModel.create(userPayload, {
-    returning: true,
-  });
 };
 
+const deleteUser = (id) => {
+  const UserIndex = store.findIndex((p) => p.id === id);
+
+  users[UserIndex] = {
+    ...[users.UserIndex],
+    isDeleted: true,
+  }
+}
+
 module.exports = {
-  findById,
-  findByEmail,
-  createUser,
+  getUserById,
+  getUsers,
+  addUser,
+  updateUser,
+  deleteUser
 }

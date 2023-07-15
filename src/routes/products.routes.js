@@ -9,4 +9,3 @@ router.patch('/:productId', ProductController.updateProduct);
 router.delete('/:productId', ProductController.deleteProduct);
 
 module.exports = router;
-
