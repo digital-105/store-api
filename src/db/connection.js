@@ -1,13 +1,15 @@
 const { Sequelize } = require('sequelize');
 const { Card, User } = require('./models');
+const config = require('./config')
+
 
 // NOTE: creates connection object
 const connection = new Sequelize(
-  'root',
-  'root',
-  'root',
+  config.name,
+  config.username,
+  config.password,
   {
-    host: 'localhost',
+    host: config.host,
     dialect: 'postgres',
   }
 );
