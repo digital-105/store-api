@@ -38,7 +38,7 @@ class ConflictException extends ApiError {
 
 class InternalServerErrorException extends ApiError {
   constructor(message){
-    super(message, 404)
+    super(message, 500)
   }
 };
 

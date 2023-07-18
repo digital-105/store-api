@@ -1,4 +1,6 @@
 const safeControllerWrapper = require('./safeControllerWrapper');
+const joiValidator = require('./joiValidator');
+
 const {
   ApiError,
   BadRequestException,
@@ -19,5 +21,6 @@ module.exports = {
   ForbiddenException,
   NotFoundException,
   ConflictException,
-  InternalServerErrorException
+  InternalServerErrorException,
+  joiValidator
 }
