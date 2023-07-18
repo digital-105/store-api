@@ -10,7 +10,7 @@ router.use('/auth', AuthRoutes);
 
 router.use(CheckAuthMiddleware)
 
-router.use('/products', ProductRoutes);
+router.use('/products', ProductRoutes); 
 router.use('/cards', CardRoutes);
 
 module.exports = router;

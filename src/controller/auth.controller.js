@@ -1,33 +1,22 @@
 const UserService = require('../services/user.service');
 const AuthService = require('../services/auth.service');
+const { safeControllerWrapper } = require('../tools')
 
+const register = safeControllerWrapper(async (req, res) => {
+  const payload = req.body;
 
-const register = async (req, res) => {
-  try {
-    const payload = req.body;
+  await UserService.createUser(payload);
 
-    await UserService.createUser(payload);
+  return res.json({ message: 'CREATED' });
+})
 
-    return res.json({ message: 'CREATED' });
-  } catch (e) {
-    return res.status(500).json({ message: e.message });
-  }
-}
+const login = safeControllerWrapper(async (req, res) => {
+  const payload = req.body;
 
-const login = async (req, res) => {
-  try {
-    const payload = req.body;
+  const token = await AuthService.login(payload);
 
-    const token = await AuthService.login(payload);
-
-    return res.json({ token })
-  }
-  catch (e) {
-    console.error(e)
-    return res.status(401).json({ message: 'UNAUTHORIZED'});
-  }
-};
-
+  return res.json({ token })
+});
 
 module.exports = {
   register,

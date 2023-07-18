@@ -1,5 +1,7 @@
 require('dotenv').config();
 require('../db/connection');
+const { errorConverterMiddleware } = require('../middlewares/errorConverter.middleware');
+const { errorHandler } = require('../middlewares/errorHandler.middleware');
 
 const express = require('express');
 
@@ -21,6 +23,9 @@ app.use((req, res) => {
   })
 });
 
+app.use(errorConverterMiddleware);
+app.use(errorHandler);
+
 app.listen(PORT, () => {
   console.log('server listens to port: ', PORT);
-})
+});    

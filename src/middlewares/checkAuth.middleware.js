@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { UnauthorizedException } = require('../tools');
 
 const checkAuth = (req, res, next) => {
   try {
@@ -9,11 +10,10 @@ const checkAuth = (req, res, next) => {
 
       return next();
     } else {
-      throw new Error('UNAUTHORIZED')
+      throw new Error()
     }
-
   } catch (e) {
-    return res.status(301).json({ message: e.message })
+    return next(new UnauthorizedException('please sign in'))
   }
 };
 
