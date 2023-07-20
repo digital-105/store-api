@@ -1,14 +1,14 @@
 const { op } = require("sequelize");
-const { User } = require("../db/models")
+const { User, Region } = require("../db/models")
 
 const getUser = async (userId) => {
-  const data = await User.findone({
+  const data = await User.findOne({
     where: {
       id: userId,
     },
     include: {
-      model: User,
-      as:'users',
+      model: Region,
+      as:'region',
       required: false,
     }
   });

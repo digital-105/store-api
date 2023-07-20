@@ -12,7 +12,7 @@ class UserType extends Model {
       {
         sequelize: connection,
         timestamps: true,
-        tableName: 'users'
+        tableName: 'userType'
       }
     )
   }
