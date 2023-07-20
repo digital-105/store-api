@@ -16,23 +16,6 @@ class User extends Model {
           type: DataTypes.STRING(50),
           allowNull: false,
         },
-        regionId: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        },
-        userTypeId: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: false,
-        }, 
-        createAt: {
-          type: DataTypes.DATE,
-          allowNull: false,
-        },
-        updateAt: {
-          type: DataTypes.DATE,
-          allowNull: false,
-        },
         deletedAt: {
           type: DataTypes.DATE,
           allowNull: true,

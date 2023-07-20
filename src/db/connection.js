@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-const { UserType } = require('./models');
+const { UserType, User, Region } = require('./models');
 
 
 const connection = new Sequelize(
@@ -8,10 +8,10 @@ const connection = new Sequelize(
 'root',
 {
   host: 'localhost',
-  diealect: 'postgres',
+  dialect: 'postgres',
   
 }
-)
+);
 
 (async () => {
   try {
@@ -28,20 +28,36 @@ Region.init(connection);
 UserType.init(connection);
 
 
-Region.belongsTo(User,{
-  as:'user',
+User.belongsTo(Region,{
+  as:'region',
   foreignKey:{
     name:'regionId',
     allowNull:false,
   },
 });
 
-UserType.belongsTo(User, {
-  as:'user',
+User.belongsTo(UserType, {
+  as:'userType',
   foreignKey: {
     name:'userTypeId',
     allowNull: false
-  }
+  },
+});
+
+Region.hasMany(User, {
+  as: 'users',
+  foreignKey:{
+  name:'regionId',
+  allowNull:false,
+  },
+});
+
+UserType.hasMany(User, {
+  as: 'users',
+  foreignKey:{
+  name:'regionId',
+  allowNull:false,
+  },
 });
 
 (async () => {

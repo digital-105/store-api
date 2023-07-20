@@ -5,7 +5,7 @@ class UserType extends Model {
     super.init(
       {
         typeName:{
-          type:DataTypes.STRING(50),
+          type: DataTypes.STRING(50),
           allowNull: false,
         }
       },
