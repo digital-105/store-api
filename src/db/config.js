@@ -1,8 +1,6 @@
-const { DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST } = process.env;
+const { MONGO_USERNAME, MONGO_PASSWORD } = process.env;
 
 module.exports = {
-  name: DB_NAME,
-  username: DB_USERNAME,
-  password: DB_PASSWORD,
-  host: DB_HOST,
+  mongoUserName: MONGO_USERNAME,
+  mongoPassword: MONGO_PASSWORD,
 }

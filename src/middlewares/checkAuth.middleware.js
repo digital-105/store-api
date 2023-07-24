@@ -6,7 +6,9 @@ const checkAuth = (req, res, next) => {
     if (req.headers.hasOwnProperty('authorization')) {
       const token = req?.headers?.authorization.split(' ')[1];
 
-      jwt.verify(token, process.env.JWT_SECRET);
+      const verified =  jwt.verify(token, process.env.JWT_SECRET);
+      
+      req.authUserId = verified.userId;
 
       return next();
     } else {

@@ -1,36 +1,51 @@
-const store = require('../db/store');
+const UserModel = require('../db/models/user.model');
+const { NotFoundException } = require('../tools');
 
-const getLatestId = () => store[store.length - 1].id + 1;
+const getProducts = () => UserModel.find();
 
-const getProducts = () => store.filter((p) => !p.isDeleted);
+const getProductById = (id) => UserModel.findById(id);
 
-const getProductById = (id) => store.find((p) => +p.id === +id && !p.isDeleted)
+const addProduct = (authUserId, payload) => UserModel.create({ ...payload, ownerId: authUserId });
 
-const addProduct = (payload) => store.push({ id: getLatestId(), ...payload, isDeleted: false });
+const updateProduct = async (_id, payload) => {
+  const product = await UserModel.findOneAndUpdate({
+    _id,
+    deletedAt: null
+  }, payload);
 
-const updateProduct = (id, payload) => {
-  const productIndex = store.findIndex((p) => p.id === id);
+  if (!product) {
+    throw new NotFoundException('product with given id does not exist')
+  }
 
-  store[productIndex] = {
-    ...store[productIndex],
-    ...payload,
-  };
+  return true;
 };
 
-const deleteProduct = (id) => {
-  const productIndex = store.findIndex((p) => p.id === id);
+const deleteProduct = async (id) => {
+  const product = await UserModel.findOneAndUpdate({
+    _id,
+    deletedAt: null
+  }, {
+    deletedAt: new Date()
+  });
 
-  store[productIndex] = {
-    ...[store.productIndex],
-    isDeleted: true,
+  if (!product) {
+    throw new NotFoundException('product with given id does not exist')
   }
+
+  return true;
 }
+
+const getUserProducts = async (userId) => UserModel.find({
+  ownerId: userId,
+  deletedAt: null
+}).populate('ownerId');
 
 module.exports = {
   getProductById,
   getProducts,
   addProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getUserProducts
 }
 

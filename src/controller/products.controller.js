@@ -1,60 +1,53 @@
 const ProductService = require('../services/products.service');
 
-const getProducts = (req, res) => {
-  const result = ProductService.getProducts();
+const getProducts = async (req, res) => {
+  const result = await ProductService.getProducts();
   
   return res.json(result);
 };
 
-const getProductById = (req, res) => {
+const getProductById = async (req, res) => {
   const { productId } = req.params;
 
-  const product = ProductService.getProductById(+productId);
+  const product = await ProductService.getProductById(+productId);
 
   return res.json(product);
 };
 
+const getUserProducts = async (req, res) => {
+  const authUserId = req.authUserId;
 
-const createProduct = (req, res) => {
+  const products = await ProductService.getUserProducts(authUserId);
+
+  return res.json(products)
+}
+
+
+const createProduct =  async (req, res) => {
   const product = req.body;
+  const authUserId = req.authUserId;
 
-  ProductService.addProduct(product);
+  await ProductService.addProduct(authUserId, product);
 
   return res.sendStatus(201);
 };
 
 
-const updateProduct = (req, res) => {
+const updateProduct = async (req, res) => {
   const { productId } = req.params;
   const payload = req.body;
 
-  const product = ProductService.getProductById(productId);
-
-  if(!product) {
-    return res.json({
-      message: 'PRODUCT_WITH_GIVEN_ID_DOES_NOT_EXIST'
-    })
-  };
-
-  ProductService.updateProduct(productId, payload);
+  await ProductService.updateProduct(productId, payload);
 
   return res.json({
     message: 'UPDATED'
   })
 };
 
-const deleteProduct = (req, res) => {
+const deleteProduct = async (req, res) => {
   const { productId } = req.params;
 
-  const product = ProductService.getProductById(productId);
-
-  if(!product) {
-    return res.json({
-      message: 'PRODUCT_WITH_GIVEN_ID_DOES_NOT_EXIST'
-    })
-  };
-
-  ProductService.deleteProduct(productId);
+  await ProductService.deleteProduct(productId);
 
   return res.json({
     message: 'DELETED',
@@ -68,4 +61,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getUserProducts,
 }

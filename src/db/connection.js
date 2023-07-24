@@ -1,61 +1,16 @@
-const { Sequelize } = require('sequelize');
-const { Card, User } = require('./models');
+const mongoose = require('mongoose');
+
 const config = require('./config')
 
-
-// NOTE: creates connection object
-const connection = new Sequelize(
-  config.name,
-  config.username,
-  config.password,
-  {
-    host: config.host,
-    dialect: 'postgres',
-  }
-);
-
-// NOTE: tests connection object validity
+let mongoConnection;
 (async () => {
-  try {
-    await connection.authenticate();
-    console.log('Connection has been established successfully.');
-
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
+  try { 
+    mongoConnection = await mongoose.connect(`mongodb+srv://${config.mongoUserName}:${config.mongoPassword}@digitaledu-105.upfrfwu.mongodb.net/?retryWrites=true&w=majority`)
+    console.log('mongo db connected successfully')
+  } catch(e) {
+    console.error('unable to connect mongoDb cluster', e)
   }
 })();
 
-// initializes models
-User.init(connection);
-Card.init(connection);
+module.exports = mongoConnection
 
-// creates relations for sequelize
-User.hasMany(Card, {
-  as: 'cards',
-  foreignKey: {
-    name: 'userId',
-    allowNull: false,
-  },
-});
-
-Card.belongsTo(User, {
-  as: 'user',
-  foreignKey: {
-    name: 'userId',
-    allowNull: false
-  }
-});
-
-// alter table users add column aprop int not null
-(async () => {
-
-  // checks whether db tables and models are equal or not
-  const syncPromises = [
-    User.sync({ force: false }).catch((e) => console.error('User', e)),
-    Card.sync({ force: false }).catch((e) => console.error('Card', e)),
-  ];
-
-  await Promise.all(syncPromises);
-})()
-
-module.exports = connection;

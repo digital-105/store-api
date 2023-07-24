@@ -1,42 +1,39 @@
-const { Model, DataTypes } = require('sequelize')
+const { default: mongoose } = require("mongoose");
+const UserTypeEnum = require('../enums/userType');
+const ProductSchema = require("../schemas/product.schema");
 
-class User extends Model {
-  static init(connection) {
-    super.init(
-      {
-        firstName: {
-          type: DataTypes.STRING(50),
-          allowNull: false,
-        },
-        lastName: {
-          type: DataTypes.STRING(50),
-          allowNull: false,
-        },
-        email: {
-          type: DataTypes.STRING(50),
-          allowNull: false,
-        },
-        password: {
-          type: DataTypes.STRING(100),
-          allowNull: false,
-        },
-        isAdmin: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-          defaultValue: false,
-        },
-        deletedAt: {
-          type: DataTypes.DATE,
-          allowNull: true,
-        },
-      },
-      {
-        sequelize: connection,
-        timestamps: true,
-        tableName: 'users'
-      }
-    )
+const UserSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  userType: {
+    type: String,
+    enum: UserTypeEnum,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: new Date(),
+    required: true,
+  },
+  updatedAt: Date,
+  deletedAt: Date,
+  products: {
+    type: [ProductSchema],
   }
-};
+});
 
-module.exports = User;
+module.exports = mongoose.model('users', UserSchema)
